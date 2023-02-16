@@ -10,13 +10,12 @@ X = pammod(0:M-1,M);
 
 
 %% 1. PAM
-iterations = 1000;
-theta_range = 1:1:10;
+iterations = 100;
+theta_range = 1/85*(1:10:1000);
 error_SNRs = zeros(1, 10);
-tester = 0;
+indexer = 1;
 % Looping over Theta = {1,2, ... 10}
 for theta = theta_range
-    tester = tester +1;
     num_errors = 0;
     % Iterating the 1000 times to estimate error for this theta
     for a = 1:iterations
@@ -48,5 +47,12 @@ for theta = theta_range
         end
     end
     prob_error = num_errors/iterations;
-    error_SNRs(theta) = prob_error;
+    error_SNRs(indexer) = prob_error;
+    indexer = indexer + 1;
 end
+
+figure
+lin = linspace(1, 100);
+plot(10*log10(lin), error_SNRs)
+xlabel('SNR')
+ylabel('Probability of error')
