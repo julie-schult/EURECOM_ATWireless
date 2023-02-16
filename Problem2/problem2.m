@@ -8,9 +8,9 @@ close all
     %  gaussian, product channel, relay case
 % 3. h4 = 1/3(h1+h2+h3), average of three i.i.d compl. gaussian
 
-snr_db= -10:2:30; %SNR interval in dB
-bits = 2^10; %Number of bits = 1024
-iterations = 1000; %cut-off
+snr_db= -10:3:30; %SNR interval in dB
+bits = 2^12; %Number of bits
+iterations = 2048;
 snr_linear = 10.^(snr_db/10); %SNR in "normal" unit
 
 P_out = zeros(1,size(snr_db,2)); %empty matrix of sixe 1 x SNR interval
@@ -30,7 +30,7 @@ for iSNR = 1:size(snr_db,2)
         h4 = complex(randn(1,bits),randn(1,bits));
 
         %%%CASE1 Uncomment each case for each plot
-        H = [h1' h2' h3' h4'];
+        %H = [h1' h2' h3' h4'];
         %%%%%%%
 
         %%%CASE2
@@ -38,7 +38,7 @@ for iSNR = 1:size(snr_db,2)
         %%%%%%%
 
         %%%CASE3
-        %H = [h1' h2' h3' (1/3).*(h1' + h2' + h3')];
+        H = [h1' h2' h3' (1/3).*(h1' + h2' + h3')];
         %%%%%%%
 
         AWGN = 1/sqrt(2)*(randn(1,bits)+j*randn(1,bits))*sigma; %additive noise
@@ -53,6 +53,6 @@ end
 
 figure(1)
 semilogy(snr_db,P_out); %P_out in log scale
-title('Probability of deep fade')
+title('Prob. of deep fade')
 xlabel('SNR [dB]')
 ylabel('Outage Probability [log]')
